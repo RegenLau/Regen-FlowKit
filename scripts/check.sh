@@ -83,15 +83,29 @@ check_dir() {
   fi
 }
 
-count_placeholders() {
+count_emoji_placeholders() {
   local file=$1
   local count=0
-
   if [ -f "$file" ]; then
-    count=$(grep -nE "⚠️ 待替换|<!--" "$file" 2>/dev/null | cut -d: -f1 | sort -u | wc -l | tr -d ' ')
+    count=$(grep -c "⚠️ 待替换" "$file" 2>/dev/null || true)
   fi
-
   echo "$count"
+}
+
+count_html_placeholders() {
+  local file=$1
+  local count=0
+  if [ -f "$file" ]; then
+    count=$(grep -cE "<!-- (填写|功能|用一句|谁在|用户为|例如：|Bug|项目中|页面|模块|用户完成|设计稿|核心实体|关键接口|预算)" "$file" 2>/dev/null || true)
+  fi
+  echo "$count"
+}
+
+count_placeholders() {
+  local file=$1
+  local emoji=$(count_emoji_placeholders "$file")
+  local html=$(count_html_placeholders "$file")
+  echo $((emoji + html))
 }
 
 # ────────────────────────────────
@@ -126,10 +140,12 @@ check_file "CLAUDE.md" "CLAUDE.md"
 check_file "AGENTS.md" "AGENTS.md"
 
 if [ -f "AGENTS.md" ]; then
-  agents_placeholders=$(count_placeholders "AGENTS.md")
-  if [ "$MODE" = "project" ] && [ "$agents_placeholders" -gt 0 ]; then
-    warn "AGENTS.md 有 $agents_placeholders 个待填写项"
-  elif [ "$MODE" = "template" ] && [ "$agents_placeholders" -gt 0 ]; then
+  agents_emoji=$(count_emoji_placeholders "AGENTS.md")
+  agents_html=$(count_html_placeholders "AGENTS.md")
+  agents_total=$((agents_emoji + agents_html))
+  if [ "$MODE" = "project" ] && [ "$agents_total" -gt 0 ]; then
+    warn "AGENTS.md 有 $agents_total 个待填写项（⚠️ $agents_emoji 个 + 模板注释 $agents_html 个）"
+  elif [ "$MODE" = "template" ] && [ "$agents_total" -gt 0 ]; then
     echo "  ℹ️  模板模式下允许 AGENTS.md 保留占位项"
   fi
 fi
@@ -141,10 +157,12 @@ if [ -f "CLAUDE.md" ]; then
     warn "CLAUDE.md 未导入 AGENTS.md"
   fi
 
-  claude_placeholders=$(count_placeholders "CLAUDE.md")
-  if [ "$MODE" = "project" ] && [ "$claude_placeholders" -gt 0 ]; then
-    warn "CLAUDE.md 仍有 $claude_placeholders 个待填写项"
-  elif [ "$MODE" = "template" ] && [ "$claude_placeholders" -gt 0 ]; then
+  claude_emoji=$(count_emoji_placeholders "CLAUDE.md")
+  claude_html=$(count_html_placeholders "CLAUDE.md")
+  claude_total=$((claude_emoji + claude_html))
+  if [ "$MODE" = "project" ] && [ "$claude_total" -gt 0 ]; then
+    warn "CLAUDE.md 仍有 $claude_total 个待填写项（⚠️ $claude_emoji 个 + 模板注释 $claude_html 个）"
+  elif [ "$MODE" = "template" ] && [ "$claude_total" -gt 0 ]; then
     echo "  ℹ️  模板模式下允许 CLAUDE.md 保留占位项"
   fi
 fi

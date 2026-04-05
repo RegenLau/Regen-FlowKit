@@ -9,6 +9,8 @@
 - **Dev**: `npm run dev`
 - **Build**: `npm run build`
 
+> 以上命令为 Node.js 默认值。若使用其他技术栈（如 Python、Go），请替换为对应命令。
+
 ### Plan Mode 使用场景
 
 Use plan mode when:

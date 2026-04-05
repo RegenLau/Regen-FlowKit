@@ -15,3 +15,13 @@ jobs:
 
       - name: Check template structure
         run: bash scripts/check.sh --mode template
+
+      - name: Lint Markdown
+        uses: DavidAnson/markdownlint-cli2-action@v19
+        with:
+          globs: '**/*.md'
+          config: |
+            {
+              "MD013": false
+            }
+

@@ -24,11 +24,13 @@
 
 | 层 | 名称 | 本项目对应 |
 |----|------|-----------|
-| L4 | 记忆层 | Auto-Memory（内置）+ memsearch（项目级）+ claude-mem（Claude Code） |
-| L3 | 验证层 | 模板自检脚本 + `.github/workflows/ci.yml`（项目接入后再补测试） |
+| L4 | 记忆层 | Auto-Memory + memsearch + claude-mem |
+| L3 | 验证层 | 自检脚本 + GitHub Actions CI |
 | L2 | 执行层 | `CLAUDE.md`（导入 `AGENTS.md`）/ rules / skills / hooks |
 | L1 | 事实源层 | `docs/` + `specs/` + `changes/` |
 | L0 | 运行环境 | Claude Code / Cursor / Codex / Antigravity |
+
+> 各层详细说明、工具安装和数据流见 [Playbook](docs/playbook.md)。
 
 ## 快速开始
 
@@ -69,7 +71,8 @@ bash scripts/check.sh --mode project
 │   ├── 02-product/            ← 产品需求
 │   ├── 03-design/             ← 设计文档
 │   ├── 04-tech/               ← 技术选型
-│   └── 05-learnings/          ← 经验教训沉淀
+│   ├── 05-learnings/          ← 经验教训沉淀
+│   └── playbook.md            ← 新项目启动 Playbook
 ├── src/                       ← 源代码
 └── scripts/                   ← 自动化脚本
 ```
@@ -91,7 +94,8 @@ bash scripts/check.sh --mode project
 
 1. 先看 [AGENTS.md](AGENTS.md)，确认协作规则和目录边界
 2. 再看 `docs/01-overview/project-brief.md`，理解项目背景
-3. 技术方案明确后，编辑 `docs/04-tech/tech-stack.md`
-4. 运行 `bash scripts/init.sh` 完成初始化
-5. 若 `init.sh` 提示缺少 OpenSpec，先安装后重跑初始化
-6. 运行 `bash scripts/check.sh --mode project` 确认就绪
+3. 阅读 [docs/playbook.md](docs/playbook.md)，了解完整启动流程和五层架构详情
+4. 技术方案明确后，编辑 `docs/04-tech/tech-stack.md`
+5. 运行 `bash scripts/init.sh` 完成初始化
+6. 若 `init.sh` 提示缺少 OpenSpec，先安装后重跑初始化
+7. 运行 `bash scripts/check.sh --mode project` 确认就绪

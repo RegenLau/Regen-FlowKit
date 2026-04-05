@@ -51,7 +51,7 @@ check_placeholder() {
   local file=$1
   local name=$2
   if [ -f "$file" ]; then
-    if grep -q "⚠️ 待替换" "$file" 2>/dev/null || grep -q "<!--" "$file" 2>/dev/null; then
+    if grep -qE "⚠️ 待替换|<!-- (填写|功能|用一句|谁在|用户为|例如：|Bug|项目中|页面|模块|用户完成|设计稿|核心实体|关键接口|预算)" "$file" 2>/dev/null; then
       echo "   ⚠️  $name 有待填写内容"
       placeholder_pending=$((placeholder_pending + 1))
     else
