@@ -1,0 +1,17 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  template-health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate shell scripts
+        run: |
+          bash -n scripts/init.sh
+          bash -n scripts/check.sh
+
+      - name: Check template structure
+        run: bash scripts/check.sh --mode template
