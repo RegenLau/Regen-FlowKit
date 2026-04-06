@@ -68,8 +68,43 @@ git clone https://github.com/RegenLau/RegenFlowKit.git ~/Templates/RegenFlowKit
 | [agent-skills](https://github.com/addyosmani/agent-skills) | Chrome 团队出品：性能优化、无障碍、安全审计 skills | 复制 skills/ 到 `.claude/skills/` |
 | [impeccable](https://github.com/pbakaus/impeccable) | Google 出品：高标准编码纪律与验证规则 | 将规则复制到 CLAUDE.md |
 | [awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | 设计系统：UI/UX 规范、组件设计指南 | 复制 `.md` 到 `.claude/skills/` |
+| [GSD (Get Shit Done)](https://github.com/gsd-build/get-shit-done) | 上下文工程：多代理编排、wave 并行执行、原子提交 | `npx get-shit-done-cc@latest` |
 
 > 💡 **用法**：不要全装。挑 1~2 个跟当前项目相关的，把核心规则提取到 CLAUDE.md 或 skills/ 即可。
+
+### 0.6 可选：安装 GSD（密集开发增强）
+
+GSD 是一个轻量级上下文工程系统，解决 **context rot**（上下文腐烂）问题。支持 12 个 AI 编程运行时。
+
+**什么时候需要 GSD：**
+- 项目进入密集开发期，需要长时间 autonomous 执行
+- 单次会话经常做不完，上下文腐烂影响输出质量
+- 想要原子 git commit + 自动验证的流水线
+
+**和 FlowKit + OpenSpec 的关系：**
+- FlowKit 提供项目结构和文档规范（L1 事实源层）
+- OpenSpec 管理变更流程（propose → apply → archive）
+- GSD 是 **执行增强层**，在 OpenSpec 的 spec 基础上提供多代理编排和自动化执行
+- 小项目用 OpenSpec 足够；项目复杂度上来后可以叠加 GSD
+
+**安装：**
+
+```bash
+npx get-shit-done-cc@latest
+# 选择运行时（Claude Code / Cursor / Codex 等）和安装位置（全局或本地）
+```
+
+**核心工作流：**
+
+```
+/gsd-new-project        → 提问 → 研究 → 需求 → 路线图
+/gsd-discuss-phase N    → 规划前收集实现决策
+/gsd-plan-phase N       → 研究 + 原子化计划 + 验证
+/gsd-execute-phase N    → 并行 wave 执行，每个任务新上下文
+/gsd-verify-work N      → 人工验收测试
+```
+
+> ⚠️ GSD 不替代 OpenSpec，二者可以并存。OpenSpec 管理 spec 和变更归档，GSD 增强执行阶段的上下文工程。
 
 ---
 
@@ -295,6 +330,7 @@ git commit -m "chore: init project with Regen FlowKit v1.0"
 | L3 | GitHub Actions | CI 自动测试 | `.github/workflows/ci.yml` |
 | L2 | CLAUDE.md / AGENTS.md | AI 行为配置 | 模板自带 |
 | L2 | claude-code-templates | 社区组件加速器 | `npx claude-code-templates@latest` |
+| L2 | GSD (Get Shit Done) | 多代理编排、上下文工程 | `npx get-shit-done-cc@latest` |
 | L2 | superpowers / gstack | 执行纪律 / 技能包 | 按需加载 |
 | L1 | FlowKit | 项目稳定知识 | 模板自带 |
 | L1 | OpenSpec | 变更管理工作流 | `npm i -g @fission-ai/openspec` |

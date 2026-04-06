@@ -50,6 +50,15 @@
 - 再围绕原型评审，稳定结论沉淀到 `docs/`
 - 功能变更通过 OpenSpec 管理：`/opsx:propose` → `/opsx:apply` → `/opsx:archive`
 
+### 可选增强：GSD（Get Shit Done）
+
+当项目进入密集开发期，可以叠加 [GSD](https://github.com/gsd-build/get-shit-done) 作为执行增强：
+- 解决 context rot（上下文腐烂）问题
+- 提供多代理编排、wave 并行执行、原子 git commit
+- 安装：`npx get-shit-done-cc@latest`
+- 和 OpenSpec 并存：OpenSpec 管 spec，GSD 增强执行
+- 详细说明见 `docs/playbook.md`
+
 ## `docs/` 与 `specs/` 的边界
 
 - `docs/` 只放稳定结论，不放过程材料
